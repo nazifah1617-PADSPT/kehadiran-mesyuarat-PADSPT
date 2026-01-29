@@ -1,1122 +1,786 @@
-{\rtf1\ansi\ansicpg1252\cocoartf2867
-\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
-{\colortbl;\red255\green255\blue255;}
-{\*\expandedcolortbl;;}
-\paperw11900\paperh16840\margl1440\margr1440\vieww11520\viewh8400\viewkind0
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Kehadiran Mesyuarat PADSPT</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(226, 232, 240, 0.8);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
 
-\f0\fs24 \cf0 <!DOCTYPE html>\
-<html lang="ms">\
-<head>\
-    <meta charset="UTF-8">\
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
-    <title>Sistem Kehadiran Mesyuarat PADSPT</title>\
-    <script src="https://cdn.tailwindcss.com"></script>\
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">\
-    \
-    <style>\
-        body \{ font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; \}\
-        \
-        .glass-card \{\
-            background: rgba(255, 255, 255, 0.95);\
-            border: 1px solid rgba(226, 232, 240, 0.8);\
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\
-        \}\
-\
-        .signature-box \{\
-            background-color: #ffffff;\
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);\
-            background-size: 20px 20px;\
-            cursor: crosshair;\
-        \}\
-\
-        .print-header \{ display: none; \}\
-\
-        @media print \{\
-            .no-print \{ display: none !important; \}\
-            .print-only \{ display: block !important; \}\
-            .print-header \{ \
-                display: block !important; \
-                text-align: center; \
-                margin-bottom: 2rem;\
-                border-bottom: 2px solid #334155;\
-                padding-bottom: 1rem;\
-            \}\
-            body \{ background: white; padding: 0; \}\
-            .glass-card \{ box-shadow: none; border: none !important; width: 100%; \}\
-            main \{ margin-top: 0 !important; \}\
-            table \{ width: 100%; border-collapse: collapse; margin-top: 1rem; table-layout: auto; \}\
-            th, td \{ border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 0.7rem; \}\
-            th \{ background-color: #f1f5f9 !important; \}\
-            img.signature-img \{ max-height: 40px !important; \}\
-            @page \{ margin: 1cm; size: A4; \}\
-        \}\
-        \
-        .animate-fade-in \{ animation: fadeIn 0.3s ease-out; \}\
-        @keyframes fadeIn \{ from \{ opacity: 0; transform: translateY(10px); \} to \{ opacity: 1; transform: translateY(0); \} \}\
-\
-        .tab-active \{ border-bottom: 3px solid #2563eb; color: #1e40af; background: #eff6ff; \}\
-        .tab-inactive \{ border-bottom: 3px solid transparent; color: #94a3b8; \}\
-    </style>\
-</head>\
-<body class="flex flex-col min-h-screen">\
-\
-    <!-- HEADER KHAS CETAKAN -->\
-    <div id="printHeader" class="print-header">\
-        <h1 id="printMeetingTitle" class="text-xl font-bold uppercase">KEHADIRAN MESYUARAT PADSPT</h1>\
-        <p class="text-sm font-medium uppercase mt-2">Koperasi Adham Al-Husainy Berhad</p>\
-        \
-        <div class="grid grid-cols-2 gap-4 text-left border-t border-b border-slate-300 py-4 mt-6 px-4">\
-            <div><strong>TARIKH:</strong> <span id="printDate">-</span></div>\
-            <div><strong>MASA:</strong> <span id="printTime">-</span></div>\
-            <div class="col-span-2"><strong>TEMPAT:</strong> <span id="printVenue">-</span></div>\
-        </div>\
-        <div class="text-sm mt-4 font-bold underline uppercase tracking-widest text-center">Senarai Kehadiran Ahli Rasmi</div>\
-    </div>\
-\
-    <!-- HEADER UTAMA -->\
-    <header class="bg-indigo-900 text-white pb-24 pt-12 px-4 no-print relative overflow-hidden">\
-        <div class="max-w-5xl mx-auto text-center relative z-10">\
-            <div class="inline-block p-4 bg-white rounded-2xl shadow-xl mb-6">\
-                <img src="https://i.postimg.cc/yNSrvgJJ/Logo-Koperasi-Adham-Al-Husainy-Berhad.png" alt="Logo" class="h-16 md:h-20 object-contain">\
-            </div>\
-            <h1 id="heroTitle" class="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight uppercase">Kehadiran Mesyuarat PADSPT</h1>\
-            <p class="text-indigo-200 text-sm md:text-base font-medium uppercase tracking-widest">Sistem Pengurusan Kehadiran Pintar (Lokal)</p>\
-        </div>\
-    </header>\
-\
-    <main class="flex-grow px-4 -mt-16 pb-12 w-full max-w-5xl mx-auto z-20 relative">\
-        \
-        <!-- DASHBOARD VIEW -->\
-        <div id="dashboardView" class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">\
-            <div class="lg:col-span-2 space-y-4">\
-                <div class="glass-card rounded-2xl p-6 md:p-8 border-t-4 border-t-indigo-600">\
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">\
-                        <h2 class="text-xl font-bold text-slate-800 tracking-tight">\uc0\u55357 \u56523  Info Mesyuarat</h2>\
-                        <span id="systemStatus" class="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full uppercase">MOD LOKAL AKTIF</span>\
-                    </div>\
-\
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">\
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">\
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Tarikh</div>\
-                            <div id="dashDate" class="font-bold text-slate-800 text-lg">-</div>\
-                        </div>\
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">\
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Masa</div>\
-                            <div id="dashTime" class="font-bold text-slate-800 text-lg">-</div>\
-                        </div>\
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">\
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Tempat</div>\
-                            <div id="dashVenue" class="font-bold text-slate-800 text-xs leading-tight uppercase">-</div>\
-                        </div>\
-                    </div>\
-\
-                    <button onclick="openModal('regModal')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 px-8 rounded-2xl shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-between group">\
-                        <div class="text-left">\
-                            <div class="text-xl uppercase font-extrabold tracking-tight">\uc0\u9997  Rekod Kehadiran</div>\
-                            <div class="text-indigo-200 text-[10px] font-normal uppercase tracking-widest">Sila daftar masuk sekarang</div>\
-                        </div>\
-                        <div class="text-2xl bg-white/20 w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">\uc0\u10140 </div>\
-                    </button>\
-                </div>\
-            </div>\
-\
-            <aside class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center relative border-t-4 border-t-emerald-500">\
-                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Jumlah Kehadiran</h3>\
-                <div class="relative mb-4">\
-                    <span id="liveCount" class="text-7xl font-black text-slate-800 tracking-tighter">0</span>\
-                    <span class="absolute -top-2 -right-2 flex h-4 w-4">\
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>\
-                      <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>\
-                    </span>\
-                </div>\
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Ahli Berdaftar Hari Ini</p>\
-                <div class="w-full bg-slate-100 rounded-full h-2 mt-6 overflow-hidden">\
-                    <div id="liveProgress" class="bg-emerald-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>\
-                </div>\
-            </aside>\
-        </div>\
-\
-        <!-- PANEL ADMIN -->\
-        <div id="adminPanel" class="hidden space-y-6 mt-6 animate-fade-in">\
-            <div class="glass-card p-6 rounded-2xl flex flex-wrap justify-between items-center gap-4 bg-slate-900 text-white no-print">\
-                <div>\
-                    <h2 class="text-xl font-bold">\uc0\u55357 \u56592  Kawalan Pentadbir</h2>\
-                    <p class="text-slate-400 text-xs font-medium">Urus rekod dan tetapan mesyuarat di sini.</p>\
-                </div>\
-                <button onclick="logout()" class="px-6 py-2 bg-slate-800 hover:bg-red-900/40 rounded-xl text-xs font-bold border border-slate-700 transition-all">Keluar Sistem</button>\
-            </div>\
-\
-            <nav class="flex border-b border-slate-200 no-print bg-white rounded-t-2xl overflow-hidden">\
-                <button onclick="switchAdminTab('archive')" id="tabBtnArchive" class="flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active">\uc0\u55357 \u56514  Rekod & Arkib</button>\
-                <button onclick="switchAdminTab('settings')" id="tabBtnSettings" class="flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive">\uc0\u9881 \u65039  Konfigurasi</button>\
-            </nav>\
-\
-            <!-- TAB: ARCHIVE -->\
-            <div id="archiveSection" class="space-y-4 no-print">\
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="archiveGrid">\
-                    <!-- Dinamik generate folder mesyuarat -->\
-                </div>\
-            </div>\
-\
-            <!-- TAB: SETTINGS -->\
-            <div id="settingsSection" class="hidden glass-card p-8 rounded-b-2xl no-print">\
-                <form id="settingsForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">\
-                    <div class="md:col-span-2">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tajuk Mesyuarat PADSPT</label>\
-                        <input type="text" id="setMeetingTitle" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all">\
-                    </div>\
-                    <div>\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tarikh</label>\
-                        <input type="date" id="setMeetingDate" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">\
-                    </div>\
-                    <div>\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Masa</label>\
-                        <input type="text" id="setMeetingTime" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: 08:30 Malam">\
-                    </div>\
-                    <div class="md:col-span-2">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Lokasi / Tempat</label>\
-                        <input type="text" id="setMeetingVenue" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">\
-                    </div>\
-                    <div class="md:col-span-2">\
-                        <button type="submit" id="saveSettingsBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-10 py-4 rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-3">\
-                            <span>Simpan Konfigurasi</span>\
-                        </button>\
-                    </div>\
-                </form>\
-            </div>\
-\
-            <!-- VIEW RECORD (TABLE) -->\
-            <div id="recordTableView" class="hidden space-y-4">\
-                <div class="flex flex-wrap justify-between items-center gap-4">\
-                    <button onclick="showArchiveList()" class="no-print flex items-center gap-2 text-indigo-600 font-black text-[10px] uppercase tracking-widest hover:underline">\
-                        \uc0\u11013  Kembali ke Arkib\
-                    </button>\
-                    <button onclick="window.print()" class="no-print px-5 py-2 bg-white text-slate-700 border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm hover:bg-slate-50 flex items-center gap-2">\
-                        \uc0\u55357 \u56744  Cetak Laporan\
-                    </button>\
-                </div>\
-\
-                <div class="glass-card rounded-2xl overflow-hidden shadow-none md:shadow-sm">\
-                    <div class="overflow-x-auto">\
-                        <table class="w-full text-left border-collapse">\
-                            <thead>\
-                                <tr class="text-[10px] font-black text-slate-400 uppercase bg-slate-50 border-y border-slate-100 tracking-widest">\
-                                    <th class="py-4 px-4 text-center">Bil</th>\
-                                    <th class="py-4 px-4">Nama Penuh</th>\
-                                    <th class="py-4 px-4">Jawatan</th>\
-                                    <th class="py-4 px-4">Agensi</th>\
-                                    <th class="py-4 px-4">No. Tel</th>\
-                                    <th class="py-4 px-4">Emel</th>\
-                                    <th class="py-4 px-4 text-center">T/Tangan</th>\
-                                    <th class="py-4 px-4 text-right no-print">Aksi</th>\
-                                </tr>\
-                            </thead>\
-                            <tbody id="attendanceTableBody" class="text-sm">\
-                                <!-- Data dinamik -->\
-                            </tbody>\
-                        </table>\
-                    </div>\
-                    <div id="noDataMsg" class="hidden py-20 text-center text-slate-400 italic">Tiada rekod pendaftaran ditemui.</div>\
-                </div>\
-            </div>\
-        </div>\
-    </main>\
-\
-    <footer class="bg-white border-t border-slate-100 py-8 mt-auto text-center no-print">\
-        <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">&copy; 2026 PADSPT KEHADIRAN</p>\
-        <button onclick="openModal('loginModal')" class="text-[10px] font-bold text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all px-4 py-2 rounded-lg hover:bg-indigo-50">Sistem Pentadbir</button>\
-    </footer>\
-\
-    <!-- MODAL PENDAFTARAN -->\
-    <div id="regModal" class="fixed inset-0 z-50 hidden no-print p-4">\
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('regModal')"></div>\
-        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg mx-auto mt-4 overflow-hidden flex flex-col max-h-[92vh]">\
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-indigo-50">\
-                <h3 class="font-bold text-indigo-900 uppercase tracking-tighter">Borang Kehadiran Mesyuarat</h3>\
-                <button onclick="closeModal('regModal')" class="text-slate-400 hover:text-slate-600 text-3xl">&times;</button>\
-            </div>\
-            <form id="attendanceForm" class="p-8 space-y-5 overflow-y-auto">\
-                <div class="space-y-1">\
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Nama Penuh</label>\
-                    <input type="text" id="inpName" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan nama penuh">\
-                </div>\
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Jawatan</label>\
-                        <input type="text" id="inpPos" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan jawatan">\
-                    </div>\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Agensi</label>\
-                        <input type="text" id="inpAgency" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: KKM / PADSPT">\
-                    </div>\
-                </div>\
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">No. Telefon</label>\
-                        <input type="tel" id="inpPhone" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="01x-xxxxxxx">\
-                    </div>\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Emel</label>\
-                        <input type="email" id="inpEmail" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="nama@agensi.gov.my">\
-                    </div>\
-                </div>\
-                <div class="space-y-2">\
-                    <div class="flex justify-between items-center">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Tandatangan Digital</label>\
-                        <button type="button" id="clearCanvas" class="text-[10px] font-black text-red-500 uppercase tracking-tighter hover:underline">Padam Semula</button>\
-                    </div>\
-                    <div class="border-2 border-dashed border-slate-200 rounded-2xl h-44 w-full relative signature-box overflow-hidden">\
-                        <canvas id="sigCanvas" class="w-full h-full"></canvas>\
-                    </div>\
-                </div>\
-                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-2xl shadow-lg mt-4 flex items-center justify-center gap-3 transition-all active:scale-95 uppercase tracking-widest">\
-                    <span>Hantar Kehadiran</span>\
-                </button>\
-            </form>\
-        </div>\
-    </div>\
-\
-    <!-- MODAL LOGIN ADMIN -->\
-    <div id="loginModal" class="fixed inset-0 z-50 hidden no-print flex items-center justify-center p-4">\
-        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onclick="closeModal('loginModal')"></div>\
-        <div class="relative bg-white rounded-3xl shadow-xl w-full max-w-sm p-8 text-center border-t-8 border-t-slate-800">\
-            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">\uc0\u55357 \u56592 </div>\
-            <h3 class="font-extrabold text-xl text-slate-800 mb-6 uppercase">Pentadbir Sahaja</h3>\
-            <div class="space-y-4 text-left">\
-                <input type="password" id="admPass" class="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-center font-bold tracking-[0.5em]" placeholder="\'95\'95\'95\'95\'95\'95\'95\'95">\
-                <p id="loginErr" class="hidden text-[10px] text-red-500 font-bold text-center uppercase">Kataluan Salah!</p>\
-            </div>\
-            <div class="mt-8 flex gap-3">\
-                <button onclick="attemptLogin()" class="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-black uppercase tracking-widest shadow-lg hover:bg-indigo-700 active:scale-95 transition-all">Masuk</button>\
-            </div>\
-        </div>\
-    </div>\
-\
-    <script>\
-        // State management menggunakan LocalStorage\
-        let attendanceList = JSON.parse(localStorage.getItem('padspt_attendance')) || [];\
-        let currentMeeting = JSON.parse(localStorage.getItem('padspt_settings')) || \{\
-            title: "MESYUARAT PADSPT",\
-            date: new Date().toISOString().split('T')[0],\
-            time: "08:30 MALAM",\
-            venue: "PEJABAT PADSPT"\
-        \};\
-        let activeAdminDate = currentMeeting.date;\
-\
-        // UI Initialization\
-        function initApp() \{\
-            updateUIWithSettings();\
-            updateDashboard();\
-            renderArchive();\
-        \}\
-\
-        // Simpan data ke LocalStorage\
-        function saveData() \{\
-            localStorage.setItem('padspt_attendance', JSON.stringify(attendanceList));\
-            localStorage.setItem('padspt_settings', JSON.stringify(currentMeeting));\
-        \}\
-\
-        function updateUIWithSettings() \{\
-            const formatDate = (ds) => \{\
-                const d = new Date(ds);\
-                return isNaN(d.getTime()) ? ds : d.toLocaleDateString('ms-MY', \{ day: '2-digit', month: 'long', year: 'numeric' \}).toUpperCase();\
-            \};\
-\
-            document.getElementById('heroTitle').textContent = currentMeeting.title;\
-            document.getElementById('dashDate').textContent = formatDate(currentMeeting.date);\
-            document.getElementById('dashTime').textContent = currentMeeting.time;\
-            document.getElementById('dashVenue').textContent = currentMeeting.venue;\
-\
-            document.getElementById('setMeetingTitle').value = currentMeeting.title;\
-            document.getElementById('setMeetingDate').value = currentMeeting.date;\
-            document.getElementById('setMeetingTime').value = currentMeeting.time;\
-            document.getElementById('setMeetingVenue').value = currentMeeting.venue;\
-            \
-            document.getElementById('printMeetingTitle').textContent = currentMeeting.title;\
-            document.getElementById('printDate').textContent = formatDate(currentMeeting.date);\
-            document.getElementById('printTime').textContent = currentMeeting.time;\
-            document.getElementById('printVenue').textContent = currentMeeting.venue;\
-        \}\
-\
-        function updateDashboard() \{\
-            const todayRecords = attendanceList.filter(r => r.meetingDate === currentMeeting.date);\
-            const count = todayRecords.length;\
-            document.getElementById('liveCount').textContent = count;\
-            const progress = Math.min((count / 20) * 100, 100);\
-            document.getElementById('liveProgress').style.width = `$\{progress\}%`;\
-        \}\
-\
-        // Tandatangan digital\
-        const canvas = document.getElementById('sigCanvas');\
-        const ctx = canvas.getContext('2d');\
-        let drawing = false;\
-\
-        function resizeCanvas() \{\
-            const rect = canvas.getBoundingClientRect();\
-            canvas.width = rect.width;\
-            canvas.height = rect.height;\
-        \}\
-\
-        function getMousePos(e) \{\
-            const rect = canvas.getBoundingClientRect();\
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;\
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;\
-            return \{ x: clientX - rect.left, y: clientY - rect.top \};\
-        \}\
-\
-        ['mousedown', 'touchstart'].forEach(evt => canvas.addEventListener(evt, (e) => \{\
-            drawing = true;\
-            const pos = getMousePos(e);\
-            ctx.beginPath();\
-            ctx.moveTo(pos.x, pos.y);\
-            if(e.type === 'touchstart') e.preventDefault();\
-        \}, \{passive: false\}));\
-\
-        ['mousemove', 'touchmove'].forEach(evt => canvas.addEventListener(evt, (e) => \{\
-            if(!drawing) return;\
-            const pos = getMousePos(e);\
-            ctx.lineWidth = 3;\
-            ctx.lineCap = 'round';\
-            ctx.strokeStyle = '#312e81';\
-            ctx.lineTo(pos.x, pos.y);\
-            ctx.stroke();\
-            if(e.type === 'touchmove') e.preventDefault();\
-        \}, \{passive: false\}));\
-\
-        ['mouseup', 'touchend'].forEach(evt => window.addEventListener(evt, () => drawing = false));\
-        document.getElementById('clearCanvas').onclick = () => ctx.clearRect(0,0, canvas.width, canvas.height);\
-\
-        // Submit Kehadiran\
-        document.getElementById('attendanceForm').onsubmit = (e) => \{\
-            e.preventDefault();\
-\
-            const blank = document.createElement('canvas');\
-            blank.width = canvas.width; blank.height = canvas.height;\
-            if (canvas.toDataURL() === blank.toDataURL()) \{\
-                alert("Sila berikan tandatangan digital sebagai pengesahan.");\
-                return;\
-            \}\
-\
-            const newRecord = \{\
-                id: Date.now().toString(),\
-                name: document.getElementById('inpName').value,\
-                position: document.getElementById('inpPos').value,\
-                agency: document.getElementById('inpAgency').value,\
-                phone: document.getElementById('inpPhone').value,\
-                email: document.getElementById('inpEmail').value,\
-                signature: canvas.toDataURL(),\
-                createdAt: new Date().toISOString(),\
-                meetingDate: currentMeeting.date\
-            \};\
-\
-            attendanceList.push(newRecord);\
-            saveData();\
-            \
-            closeModal('regModal');\
-            e.target.reset();\
-            ctx.clearRect(0,0, canvas.width, canvas.height);\
-            updateDashboard();\
-            renderArchive();\
-            alert("Kehadiran berjaya direkodkan.");\
-        \};\
-\
-        // Simpan Tetapan\
-        document.getElementById('settingsForm').onsubmit = (e) => \{\
-            e.preventDefault();\
-            currentMeeting = \{\
-                title: document.getElementById('setMeetingTitle').value.toUpperCase(),\
-                date: document.getElementById('setMeetingDate').value,\
-                time: document.getElementById('setMeetingTime').value.toUpperCase(),\
-                venue: document.getElementById('setMeetingVenue').value.toUpperCase()\
-            \};\
-            saveData();\
-            updateUIWithSettings();\
-            updateDashboard();\
-            renderArchive();\
-            alert("Konfigurasi mesyuarat telah dikemas kini!");\
-        \};\
-\
-        // Render Arkib & Jadual\
-        function renderArchive() \{\
-            const grid = document.getElementById('archiveGrid');\
-            if(!grid) return;\
-            grid.innerHTML = '';\
-\
-            const dates = [...new Set(attendanceList.map(r => r.meetingDate))];\
-            if(!dates.includes(currentMeeting.date)) dates.push(currentMeeting.date);\
-            dates.sort((a,b) => b.localeCompare(a));\
-\
-            dates.forEach(dateStr => \{\
-                const isActive = dateStr === currentMeeting.date;\
-                const d = new Date(dateStr);\
-                const display = d.toLocaleDateString('ms-MY', \{ day: '2-digit', month: 'short', year: 'numeric' \});\
-                \
-                const card = document.createElement('div');\
-                card.className = `glass-card p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-indigo-500 transition-all $\{isActive ? 'border-l-4 border-l-indigo-600 bg-indigo-50/20' : ''\}`;\
-                card.onclick = () => showTable(dateStr);\
-                \
-                card.innerHTML = `\
-                    <div class="flex items-center gap-4">\
-                        <div class="w-12 h-12 $\{isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'\} rounded-xl flex items-center justify-center text-xl shadow-sm">\
-                            $\{isActive ? '\uc0\u55357 \u56787 \u65039 ' : '\u55357 \u56513 '\}\
-                        </div>\
-                        <div>\
-                            <h4 class="font-extrabold text-slate-800 uppercase text-sm">$\{isActive ? currentMeeting.title : 'Rekod Mesyuarat'\}</h4>\
-                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">$\{display\}</p>\
-                        </div>\
-                    </div>\
-                    <div class="text-slate-300 group-hover:text-indigo-600 transition-colors">\uc0\u10140 </div>\
-                `;\
-                grid.appendChild(card);\
-            \});\
-        \}\
-\
-        function renderTable(dateStr) \{\
-            const tbody = document.getElementById('attendanceTableBody');\
-            tbody.innerHTML = '';\
-            \
-            const filtered = attendanceList.filter(r => r.meetingDate === dateStr);\
-\
-            if(filtered.length === 0) \{\
-                document.getElementById('noDataMsg').classList.remove('hidden');\
-                return;\
-            \}\
-            document.getElementById('noDataMsg').classList.add('hidden');\
-\
-            filtered.forEach((r, idx) => \{\
-                const tr = document.createElement('tr');\
-                tr.className = "border-b border-slate-50 hover:bg-slate-50/50 transition-colors";\
-                tr.innerHTML = `\
-                    <td class="py-4 px-4 text-center font-mono text-xs text-slate-400">$\{idx+1\}</td>\
-                    <td class="py-4 px-4 font-bold text-slate-800">$\{r.name\}</td>\
-                    <td class="py-4 px-4 text-xs font-semibold text-slate-600 uppercase">$\{r.position\}</td>\
-                    <td class="py-4 px-4 text-xs text-indigo-600 font-bold uppercase">$\{r.agency\}</td>\
-                    <td class="py-4 px-4 text-xs font-mono">$\{r.phone\}</td>\
-                    <td class="py-4 px-4 text-[10px] text-slate-500 lowercase">$\{r.email || '-'\}</td>\
-                    <td class="py-4 px-4 text-center">\
-                        <img src="$\{r.signature\}" class="h-8 mx-auto border border-slate-100 bg-white rounded signature-img shadow-sm hover:scale-[3] transition-transform cursor-zoom-in">\
-                    </td>\
-                    <td class="py-4 px-4 text-right no-print">\
-                        <button onclick="window.delEntry('$\{r.id\}')" class="text-slate-300 hover:text-red-500 transition-colors">\uc0\u55357 \u56785 </button>\
-                    </td>\
-                `;\
-                tbody.appendChild(tr);\
-            \});\
-        \}\
-\
-        // Fungsi Global\
-        window.openModal = (id) => \{\
-            document.getElementById(id).classList.remove('hidden');\
-            if (id === 'regModal') setTimeout(resizeCanvas, 100);\
-        \};\
-        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');\
-        \
-        window.attemptLogin = () => \{\
-            const pass = document.getElementById('admPass').value;\
-            if (pass === 'Admin123') \{\
-                closeModal('loginModal');\
-                document.getElementById('dashboardView').classList.add('hidden');\
-                document.getElementById('adminPanel').classList.remove('hidden');\
-            \} else \{\
-                document.getElementById('loginErr').classList.remove('hidden');\
-            \}\
-        \};\
-\
-        window.logout = () => \{\
-            document.getElementById('adminPanel').classList.add('hidden');\
-            document.getElementById('dashboardView').classList.remove('hidden');\
-        \};\
-\
-        window.switchAdminTab = (tab) => \{\
-            document.getElementById('archiveSection').classList.toggle('hidden', tab !== 'archive');\
-            document.getElementById('settingsSection').classList.toggle('hidden', tab !== 'settings');\
-            document.getElementById('tabBtnArchive').className = tab === 'archive' ? 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active' : 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive';\
-            document.getElementById('tabBtnSettings').className = tab === 'settings' ? 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active' : 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive';\
-            document.getElementById('recordTableView').classList.add('hidden');\
-        \};\
-\
-        window.showTable = (dateStr) => \{\
-            activeAdminDate = dateStr;\
-            document.getElementById('archiveSection').classList.add('hidden');\
-            document.getElementById('recordTableView').classList.remove('hidden');\
-            renderTable(dateStr);\
-        \};\
-\
-        window.showArchiveList = () => \{\
-            document.getElementById('recordTableView').classList.add('hidden');\
-            document.getElementById('archiveSection').classList.remove('hidden');\
-        \};\
-\
-        window.delEntry = (id) => \{\
-            if (confirm("Hapus rekod ini secara kekal dari komputer ini?")) \{\
-                attendanceList = attendanceList.filter(r => r.id !== id);\
-                saveData();\
-                renderTable(activeAdminDate);\
-                updateDashboard();\
-                renderArchive();\
-            \}\
-        \};\
-\
-        // Start App\
-        initApp();\
-    </script>\
-</body>\
-</html><!DOCTYPE html>\
-<html lang="ms">\
-<head>\
-    <meta charset="UTF-8">\
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">\
-    <title>Sistem Kehadiran Mesyuarat PADSPT</title>\
-    <script src="https://cdn.tailwindcss.com"></script>\
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">\
-    \
-    <style>\
-        body \{ font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; color: #334155; \}\
-        \
-        .glass-card \{\
-            background: rgba(255, 255, 255, 0.95);\
-            border: 1px solid rgba(226, 232, 240, 0.8);\
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);\
-        \}\
-\
-        .signature-box \{\
-            background-color: #ffffff;\
-            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);\
-            background-size: 20px 20px;\
-            cursor: crosshair;\
-        \}\
-\
-        .print-header \{ display: none; \}\
-\
-        @media print \{\
-            .no-print \{ display: none !important; \}\
-            .print-only \{ display: block !important; \}\
-            .print-header \{ \
-                display: block !important; \
-                text-align: center; \
-                margin-bottom: 2rem;\
-                border-bottom: 2px solid #334155;\
-                padding-bottom: 1rem;\
-            \}\
-            body \{ background: white; padding: 0; \}\
-            .glass-card \{ box-shadow: none; border: none !important; width: 100%; \}\
-            main \{ margin-top: 0 !important; \}\
-            table \{ width: 100%; border-collapse: collapse; margin-top: 1rem; table-layout: auto; \}\
-            th, td \{ border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 0.7rem; \}\
-            th \{ background-color: #f1f5f9 !important; \}\
-            img.signature-img \{ max-height: 40px !important; \}\
-            @page \{ margin: 1cm; size: A4; \}\
-        \}\
-        \
-        .animate-fade-in \{ animation: fadeIn 0.3s ease-out; \}\
-        @keyframes fadeIn \{ from \{ opacity: 0; transform: translateY(10px); \} to \{ opacity: 1; transform: translateY(0); \} \}\
-\
-        .tab-active \{ border-bottom: 3px solid #2563eb; color: #1e40af; background: #eff6ff; \}\
-        .tab-inactive \{ border-bottom: 3px solid transparent; color: #94a3b8; \}\
-    </style>\
-</head>\
-<body class="flex flex-col min-h-screen">\
-\
-    <!-- HEADER KHAS CETAKAN -->\
-    <div id="printHeader" class="print-header">\
-        <h1 id="printMeetingTitle" class="text-xl font-bold uppercase">KEHADIRAN MESYUARAT PADSPT</h1>\
-        <p class="text-sm font-medium uppercase mt-2">Koperasi Adham Al-Husainy Berhad</p>\
-        \
-        <div class="grid grid-cols-2 gap-4 text-left border-t border-b border-slate-300 py-4 mt-6 px-4">\
-            <div><strong>TARIKH:</strong> <span id="printDate">-</span></div>\
-            <div><strong>MASA:</strong> <span id="printTime">-</span></div>\
-            <div class="col-span-2"><strong>TEMPAT:</strong> <span id="printVenue">-</span></div>\
-        </div>\
-        <div class="text-sm mt-4 font-bold underline uppercase tracking-widest text-center">Senarai Kehadiran Ahli Rasmi</div>\
-    </div>\
-\
-    <!-- HEADER UTAMA -->\
-    <header class="bg-indigo-900 text-white pb-24 pt-12 px-4 no-print relative overflow-hidden">\
-        <div class="max-w-5xl mx-auto text-center relative z-10">\
-            <div class="inline-block p-4 bg-white rounded-2xl shadow-xl mb-6">\
-                <img src="https://i.postimg.cc/yNSrvgJJ/Logo-Koperasi-Adham-Al-Husainy-Berhad.png" alt="Logo" class="h-16 md:h-20 object-contain">\
-            </div>\
-            <h1 id="heroTitle" class="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight uppercase">Kehadiran Mesyuarat PADSPT</h1>\
-            <p class="text-indigo-200 text-sm md:text-base font-medium uppercase tracking-widest">Sistem Pengurusan Kehadiran Pintar (Lokal)</p>\
-        </div>\
-    </header>\
-\
-    <main class="flex-grow px-4 -mt-16 pb-12 w-full max-w-5xl mx-auto z-20 relative">\
-        \
-        <!-- DASHBOARD VIEW -->\
-        <div id="dashboardView" class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">\
-            <div class="lg:col-span-2 space-y-4">\
-                <div class="glass-card rounded-2xl p-6 md:p-8 border-t-4 border-t-indigo-600">\
-                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">\
-                        <h2 class="text-xl font-bold text-slate-800 tracking-tight">\uc0\u55357 \u56523  Info Mesyuarat</h2>\
-                        <span id="systemStatus" class="px-3 py-1 bg-blue-100 text-blue-700 text-[10px] font-bold rounded-full uppercase">MOD LOKAL AKTIF</span>\
-                    </div>\
-\
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">\
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">\
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Tarikh</div>\
-                            <div id="dashDate" class="font-bold text-slate-800 text-lg">-</div>\
-                        </div>\
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">\
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Masa</div>\
-                            <div id="dashTime" class="font-bold text-slate-800 text-lg">-</div>\
-                        </div>\
-                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">\
-                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Tempat</div>\
-                            <div id="dashVenue" class="font-bold text-slate-800 text-xs leading-tight uppercase">-</div>\
-                        </div>\
-                    </div>\
-\
-                    <button onclick="openModal('regModal')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 px-8 rounded-2xl shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-between group">\
-                        <div class="text-left">\
-                            <div class="text-xl uppercase font-extrabold tracking-tight">\uc0\u9997  Rekod Kehadiran</div>\
-                            <div class="text-indigo-200 text-[10px] font-normal uppercase tracking-widest">Sila daftar masuk sekarang</div>\
-                        </div>\
-                        <div class="text-2xl bg-white/20 w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">\uc0\u10140 </div>\
-                    </button>\
-                </div>\
-            </div>\
-\
-            <aside class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center relative border-t-4 border-t-emerald-500">\
-                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Jumlah Kehadiran</h3>\
-                <div class="relative mb-4">\
-                    <span id="liveCount" class="text-7xl font-black text-slate-800 tracking-tighter">0</span>\
-                    <span class="absolute -top-2 -right-2 flex h-4 w-4">\
-                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>\
-                      <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>\
-                    </span>\
-                </div>\
-                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Ahli Berdaftar Hari Ini</p>\
-                <div class="w-full bg-slate-100 rounded-full h-2 mt-6 overflow-hidden">\
-                    <div id="liveProgress" class="bg-emerald-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>\
-                </div>\
-            </aside>\
-        </div>\
-\
-        <!-- PANEL ADMIN -->\
-        <div id="adminPanel" class="hidden space-y-6 mt-6 animate-fade-in">\
-            <div class="glass-card p-6 rounded-2xl flex flex-wrap justify-between items-center gap-4 bg-slate-900 text-white no-print">\
-                <div>\
-                    <h2 class="text-xl font-bold">\uc0\u55357 \u56592  Kawalan Pentadbir</h2>\
-                    <p class="text-slate-400 text-xs font-medium">Urus rekod dan tetapan mesyuarat di sini.</p>\
-                </div>\
-                <button onclick="logout()" class="px-6 py-2 bg-slate-800 hover:bg-red-900/40 rounded-xl text-xs font-bold border border-slate-700 transition-all">Keluar Sistem</button>\
-            </div>\
-\
-            <nav class="flex border-b border-slate-200 no-print bg-white rounded-t-2xl overflow-hidden">\
-                <button onclick="switchAdminTab('archive')" id="tabBtnArchive" class="flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active">\uc0\u55357 \u56514  Rekod & Arkib</button>\
-                <button onclick="switchAdminTab('settings')" id="tabBtnSettings" class="flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive">\uc0\u9881 \u65039  Konfigurasi</button>\
-            </nav>\
-\
-            <!-- TAB: ARCHIVE -->\
-            <div id="archiveSection" class="space-y-4 no-print">\
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="archiveGrid">\
-                    <!-- Dinamik generate folder mesyuarat -->\
-                </div>\
-            </div>\
-\
-            <!-- TAB: SETTINGS -->\
-            <div id="settingsSection" class="hidden glass-card p-8 rounded-b-2xl no-print">\
-                <form id="settingsForm" class="grid grid-cols-1 md:grid-cols-2 gap-6">\
-                    <div class="md:col-span-2">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tajuk Mesyuarat PADSPT</label>\
-                        <input type="text" id="setMeetingTitle" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all">\
-                    </div>\
-                    <div>\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tarikh</label>\
-                        <input type="date" id="setMeetingDate" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">\
-                    </div>\
-                    <div>\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Masa</label>\
-                        <input type="text" id="setMeetingTime" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: 08:30 Malam">\
-                    </div>\
-                    <div class="md:col-span-2">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Lokasi / Tempat</label>\
-                        <input type="text" id="setMeetingVenue" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">\
-                    </div>\
-                    <div class="md:col-span-2">\
-                        <button type="submit" id="saveSettingsBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-10 py-4 rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-3">\
-                            <span>Simpan Konfigurasi</span>\
-                        </button>\
-                    </div>\
-                </form>\
-            </div>\
-\
-            <!-- VIEW RECORD (TABLE) -->\
-            <div id="recordTableView" class="hidden space-y-4">\
-                <div class="flex flex-wrap justify-between items-center gap-4">\
-                    <button onclick="showArchiveList()" class="no-print flex items-center gap-2 text-indigo-600 font-black text-[10px] uppercase tracking-widest hover:underline">\
-                        \uc0\u11013  Kembali ke Arkib\
-                    </button>\
-                    <button onclick="window.print()" class="no-print px-5 py-2 bg-white text-slate-700 border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm hover:bg-slate-50 flex items-center gap-2">\
-                        \uc0\u55357 \u56744  Cetak Laporan\
-                    </button>\
-                </div>\
-\
-                <div class="glass-card rounded-2xl overflow-hidden shadow-none md:shadow-sm">\
-                    <div class="overflow-x-auto">\
-                        <table class="w-full text-left border-collapse">\
-                            <thead>\
-                                <tr class="text-[10px] font-black text-slate-400 uppercase bg-slate-50 border-y border-slate-100 tracking-widest">\
-                                    <th class="py-4 px-4 text-center">Bil</th>\
-                                    <th class="py-4 px-4">Nama Penuh</th>\
-                                    <th class="py-4 px-4">Jawatan</th>\
-                                    <th class="py-4 px-4">Agensi</th>\
-                                    <th class="py-4 px-4">No. Tel</th>\
-                                    <th class="py-4 px-4">Emel</th>\
-                                    <th class="py-4 px-4 text-center">T/Tangan</th>\
-                                    <th class="py-4 px-4 text-right no-print">Aksi</th>\
-                                </tr>\
-                            </thead>\
-                            <tbody id="attendanceTableBody" class="text-sm">\
-                                <!-- Data dinamik -->\
-                            </tbody>\
-                        </table>\
-                    </div>\
-                    <div id="noDataMsg" class="hidden py-20 text-center text-slate-400 italic">Tiada rekod pendaftaran ditemui.</div>\
-                </div>\
-            </div>\
-        </div>\
-    </main>\
-\
-    <footer class="bg-white border-t border-slate-100 py-8 mt-auto text-center no-print">\
-        <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">&copy; 2026 PADSPT KEHADIRAN</p>\
-        <button onclick="openModal('loginModal')" class="text-[10px] font-bold text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all px-4 py-2 rounded-lg hover:bg-indigo-50">Sistem Pentadbir</button>\
-    </footer>\
-\
-    <!-- MODAL PENDAFTARAN -->\
-    <div id="regModal" class="fixed inset-0 z-50 hidden no-print p-4">\
-        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('regModal')"></div>\
-        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg mx-auto mt-4 overflow-hidden flex flex-col max-h-[92vh]">\
-            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-indigo-50">\
-                <h3 class="font-bold text-indigo-900 uppercase tracking-tighter">Borang Kehadiran Mesyuarat</h3>\
-                <button onclick="closeModal('regModal')" class="text-slate-400 hover:text-slate-600 text-3xl">&times;</button>\
-            </div>\
-            <form id="attendanceForm" class="p-8 space-y-5 overflow-y-auto">\
-                <div class="space-y-1">\
-                    <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Nama Penuh</label>\
-                    <input type="text" id="inpName" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan nama penuh">\
-                </div>\
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Jawatan</label>\
-                        <input type="text" id="inpPos" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan jawatan">\
-                    </div>\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Agensi</label>\
-                        <input type="text" id="inpAgency" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: KKM / PADSPT">\
-                    </div>\
-                </div>\
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">No. Telefon</label>\
-                        <input type="tel" id="inpPhone" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="01x-xxxxxxx">\
-                    </div>\
-                    <div class="space-y-1">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Emel</label>\
-                        <input type="email" id="inpEmail" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="nama@agensi.gov.my">\
-                    </div>\
-                </div>\
-                <div class="space-y-2">\
-                    <div class="flex justify-between items-center">\
-                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Tandatangan Digital</label>\
-                        <button type="button" id="clearCanvas" class="text-[10px] font-black text-red-500 uppercase tracking-tighter hover:underline">Padam Semula</button>\
-                    </div>\
-                    <div class="border-2 border-dashed border-slate-200 rounded-2xl h-44 w-full relative signature-box overflow-hidden">\
-                        <canvas id="sigCanvas" class="w-full h-full"></canvas>\
-                    </div>\
-                </div>\
-                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-2xl shadow-lg mt-4 flex items-center justify-center gap-3 transition-all active:scale-95 uppercase tracking-widest">\
-                    <span>Hantar Kehadiran</span>\
-                </button>\
-            </form>\
-        </div>\
-    </div>\
-\
-    <!-- MODAL LOGIN ADMIN -->\
-    <div id="loginModal" class="fixed inset-0 z-50 hidden no-print flex items-center justify-center p-4">\
-        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onclick="closeModal('loginModal')"></div>\
-        <div class="relative bg-white rounded-3xl shadow-xl w-full max-w-sm p-8 text-center border-t-8 border-t-slate-800">\
-            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">\uc0\u55357 \u56592 </div>\
-            <h3 class="font-extrabold text-xl text-slate-800 mb-6 uppercase">Pentadbir Sahaja</h3>\
-            <div class="space-y-4 text-left">\
-                <input type="password" id="admPass" class="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-center font-bold tracking-[0.5em]" placeholder="\'95\'95\'95\'95\'95\'95\'95\'95">\
-                <p id="loginErr" class="hidden text-[10px] text-red-500 font-bold text-center uppercase">Kataluan Salah!</p>\
-            </div>\
-            <div class="mt-8 flex gap-3">\
-                <button onclick="attemptLogin()" class="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-black uppercase tracking-widest shadow-lg hover:bg-indigo-700 active:scale-95 transition-all">Masuk</button>\
-            </div>\
-        </div>\
-    </div>\
-\
-    <script>\
-        // State management menggunakan LocalStorage\
-        let attendanceList = JSON.parse(localStorage.getItem('padspt_attendance')) || [];\
-        let currentMeeting = JSON.parse(localStorage.getItem('padspt_settings')) || \{\
-            title: "MESYUARAT PADSPT",\
-            date: new Date().toISOString().split('T')[0],\
-            time: "08:30 MALAM",\
-            venue: "PEJABAT PADSPT"\
-        \};\
-        let activeAdminDate = currentMeeting.date;\
-\
-        // UI Initialization\
-        function initApp() \{\
-            updateUIWithSettings();\
-            updateDashboard();\
-            renderArchive();\
-        \}\
-\
-        // Simpan data ke LocalStorage\
-        function saveData() \{\
-            localStorage.setItem('padspt_attendance', JSON.stringify(attendanceList));\
-            localStorage.setItem('padspt_settings', JSON.stringify(currentMeeting));\
-        \}\
-\
-        function updateUIWithSettings() \{\
-            const formatDate = (ds) => \{\
-                const d = new Date(ds);\
-                return isNaN(d.getTime()) ? ds : d.toLocaleDateString('ms-MY', \{ day: '2-digit', month: 'long', year: 'numeric' \}).toUpperCase();\
-            \};\
-\
-            document.getElementById('heroTitle').textContent = currentMeeting.title;\
-            document.getElementById('dashDate').textContent = formatDate(currentMeeting.date);\
-            document.getElementById('dashTime').textContent = currentMeeting.time;\
-            document.getElementById('dashVenue').textContent = currentMeeting.venue;\
-\
-            document.getElementById('setMeetingTitle').value = currentMeeting.title;\
-            document.getElementById('setMeetingDate').value = currentMeeting.date;\
-            document.getElementById('setMeetingTime').value = currentMeeting.time;\
-            document.getElementById('setMeetingVenue').value = currentMeeting.venue;\
-            \
-            document.getElementById('printMeetingTitle').textContent = currentMeeting.title;\
-            document.getElementById('printDate').textContent = formatDate(currentMeeting.date);\
-            document.getElementById('printTime').textContent = currentMeeting.time;\
-            document.getElementById('printVenue').textContent = currentMeeting.venue;\
-        \}\
-\
-        function updateDashboard() \{\
-            const todayRecords = attendanceList.filter(r => r.meetingDate === currentMeeting.date);\
-            const count = todayRecords.length;\
-            document.getElementById('liveCount').textContent = count;\
-            const progress = Math.min((count / 20) * 100, 100);\
-            document.getElementById('liveProgress').style.width = `$\{progress\}%`;\
-        \}\
-\
-        // Tandatangan digital\
-        const canvas = document.getElementById('sigCanvas');\
-        const ctx = canvas.getContext('2d');\
-        let drawing = false;\
-\
-        function resizeCanvas() \{\
-            const rect = canvas.getBoundingClientRect();\
-            canvas.width = rect.width;\
-            canvas.height = rect.height;\
-        \}\
-\
-        function getMousePos(e) \{\
-            const rect = canvas.getBoundingClientRect();\
-            const clientX = e.touches ? e.touches[0].clientX : e.clientX;\
-            const clientY = e.touches ? e.touches[0].clientY : e.clientY;\
-            return \{ x: clientX - rect.left, y: clientY - rect.top \};\
-        \}\
-\
-        ['mousedown', 'touchstart'].forEach(evt => canvas.addEventListener(evt, (e) => \{\
-            drawing = true;\
-            const pos = getMousePos(e);\
-            ctx.beginPath();\
-            ctx.moveTo(pos.x, pos.y);\
-            if(e.type === 'touchstart') e.preventDefault();\
-        \}, \{passive: false\}));\
-\
-        ['mousemove', 'touchmove'].forEach(evt => canvas.addEventListener(evt, (e) => \{\
-            if(!drawing) return;\
-            const pos = getMousePos(e);\
-            ctx.lineWidth = 3;\
-            ctx.lineCap = 'round';\
-            ctx.strokeStyle = '#312e81';\
-            ctx.lineTo(pos.x, pos.y);\
-            ctx.stroke();\
-            if(e.type === 'touchmove') e.preventDefault();\
-        \}, \{passive: false\}));\
-\
-        ['mouseup', 'touchend'].forEach(evt => window.addEventListener(evt, () => drawing = false));\
-        document.getElementById('clearCanvas').onclick = () => ctx.clearRect(0,0, canvas.width, canvas.height);\
-\
-        // Submit Kehadiran\
-        document.getElementById('attendanceForm').onsubmit = (e) => \{\
-            e.preventDefault();\
-\
-            const blank = document.createElement('canvas');\
-            blank.width = canvas.width; blank.height = canvas.height;\
-            if (canvas.toDataURL() === blank.toDataURL()) \{\
-                alert("Sila berikan tandatangan digital sebagai pengesahan.");\
-                return;\
-            \}\
-\
-            const newRecord = \{\
-                id: Date.now().toString(),\
-                name: document.getElementById('inpName').value,\
-                position: document.getElementById('inpPos').value,\
-                agency: document.getElementById('inpAgency').value,\
-                phone: document.getElementById('inpPhone').value,\
-                email: document.getElementById('inpEmail').value,\
-                signature: canvas.toDataURL(),\
-                createdAt: new Date().toISOString(),\
-                meetingDate: currentMeeting.date\
-            \};\
-\
-            attendanceList.push(newRecord);\
-            saveData();\
-            \
-            closeModal('regModal');\
-            e.target.reset();\
-            ctx.clearRect(0,0, canvas.width, canvas.height);\
-            updateDashboard();\
-            renderArchive();\
-            alert("Kehadiran berjaya direkodkan.");\
-        \};\
-\
-        // Simpan Tetapan\
-        document.getElementById('settingsForm').onsubmit = (e) => \{\
-            e.preventDefault();\
-            currentMeeting = \{\
-                title: document.getElementById('setMeetingTitle').value.toUpperCase(),\
-                date: document.getElementById('setMeetingDate').value,\
-                time: document.getElementById('setMeetingTime').value.toUpperCase(),\
-                venue: document.getElementById('setMeetingVenue').value.toUpperCase()\
-            \};\
-            saveData();\
-            updateUIWithSettings();\
-            updateDashboard();\
-            renderArchive();\
-            alert("Konfigurasi mesyuarat telah dikemas kini!");\
-        \};\
-\
-        // Render Arkib & Jadual\
-        function renderArchive() \{\
-            const grid = document.getElementById('archiveGrid');\
-            if(!grid) return;\
-            grid.innerHTML = '';\
-\
-            const dates = [...new Set(attendanceList.map(r => r.meetingDate))];\
-            if(!dates.includes(currentMeeting.date)) dates.push(currentMeeting.date);\
-            dates.sort((a,b) => b.localeCompare(a));\
-\
-            dates.forEach(dateStr => \{\
-                const isActive = dateStr === currentMeeting.date;\
-                const d = new Date(dateStr);\
-                const display = d.toLocaleDateString('ms-MY', \{ day: '2-digit', month: 'short', year: 'numeric' \});\
-                \
-                const card = document.createElement('div');\
-                card.className = `glass-card p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-indigo-500 transition-all $\{isActive ? 'border-l-4 border-l-indigo-600 bg-indigo-50/20' : ''\}`;\
-                card.onclick = () => showTable(dateStr);\
-                \
-                card.innerHTML = `\
-                    <div class="flex items-center gap-4">\
-                        <div class="w-12 h-12 $\{isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'\} rounded-xl flex items-center justify-center text-xl shadow-sm">\
-                            $\{isActive ? '\uc0\u55357 \u56787 \u65039 ' : '\u55357 \u56513 '\}\
-                        </div>\
-                        <div>\
-                            <h4 class="font-extrabold text-slate-800 uppercase text-sm">$\{isActive ? currentMeeting.title : 'Rekod Mesyuarat'\}</h4>\
-                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">$\{display\}</p>\
-                        </div>\
-                    </div>\
-                    <div class="text-slate-300 group-hover:text-indigo-600 transition-colors">\uc0\u10140 </div>\
-                `;\
-                grid.appendChild(card);\
-            \});\
-        \}\
-\
-        function renderTable(dateStr) \{\
-            const tbody = document.getElementById('attendanceTableBody');\
-            tbody.innerHTML = '';\
-            \
-            const filtered = attendanceList.filter(r => r.meetingDate === dateStr);\
-\
-            if(filtered.length === 0) \{\
-                document.getElementById('noDataMsg').classList.remove('hidden');\
-                return;\
-            \}\
-            document.getElementById('noDataMsg').classList.add('hidden');\
-\
-            filtered.forEach((r, idx) => \{\
-                const tr = document.createElement('tr');\
-                tr.className = "border-b border-slate-50 hover:bg-slate-50/50 transition-colors";\
-                tr.innerHTML = `\
-                    <td class="py-4 px-4 text-center font-mono text-xs text-slate-400">$\{idx+1\}</td>\
-                    <td class="py-4 px-4 font-bold text-slate-800">$\{r.name\}</td>\
-                    <td class="py-4 px-4 text-xs font-semibold text-slate-600 uppercase">$\{r.position\}</td>\
-                    <td class="py-4 px-4 text-xs text-indigo-600 font-bold uppercase">$\{r.agency\}</td>\
-                    <td class="py-4 px-4 text-xs font-mono">$\{r.phone\}</td>\
-                    <td class="py-4 px-4 text-[10px] text-slate-500 lowercase">$\{r.email || '-'\}</td>\
-                    <td class="py-4 px-4 text-center">\
-                        <img src="$\{r.signature\}" class="h-8 mx-auto border border-slate-100 bg-white rounded signature-img shadow-sm hover:scale-[3] transition-transform cursor-zoom-in">\
-                    </td>\
-                    <td class="py-4 px-4 text-right no-print">\
-                        <button onclick="window.delEntry('$\{r.id\}')" class="text-slate-300 hover:text-red-500 transition-colors">\uc0\u55357 \u56785 </button>\
-                    </td>\
-                `;\
-                tbody.appendChild(tr);\
-            \});\
-        \}\
-\
-        // Fungsi Global\
-        window.openModal = (id) => \{\
-            document.getElementById(id).classList.remove('hidden');\
-            if (id === 'regModal') setTimeout(resizeCanvas, 100);\
-        \};\
-        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');\
-        \
-        window.attemptLogin = () => \{\
-            const pass = document.getElementById('admPass').value;\
-            if (pass === 'Admin123') \{\
-                closeModal('loginModal');\
-                document.getElementById('dashboardView').classList.add('hidden');\
-                document.getElementById('adminPanel').classList.remove('hidden');\
-            \} else \{\
-                document.getElementById('loginErr').classList.remove('hidden');\
-            \}\
-        \};\
-\
-        window.logout = () => \{\
-            document.getElementById('adminPanel').classList.add('hidden');\
-            document.getElementById('dashboardView').classList.remove('hidden');\
-        \};\
-\
-        window.switchAdminTab = (tab) => \{\
-            document.getElementById('archiveSection').classList.toggle('hidden', tab !== 'archive');\
-            document.getElementById('settingsSection').classList.toggle('hidden', tab !== 'settings');\
-            document.getElementById('tabBtnArchive').className = tab === 'archive' ? 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active' : 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive';\
-            document.getElementById('tabBtnSettings').className = tab === 'settings' ? 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active' : 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive';\
-            document.getElementById('recordTableView').classList.add('hidden');\
-        \};\
-\
-        window.showTable = (dateStr) => \{\
-            activeAdminDate = dateStr;\
-            document.getElementById('archiveSection').classList.add('hidden');\
-            document.getElementById('recordTableView').classList.remove('hidden');\
-            renderTable(dateStr);\
-        \};\
-\
-        window.showArchiveList = () => \{\
-            document.getElementById('recordTableView').classList.add('hidden');\
-            document.getElementById('archiveSection').classList.remove('hidden');\
-        \};\
-\
-        window.delEntry = (id) => \{\
-            if (confirm("Hapus rekod ini secara kekal dari komputer ini?")) \{\
-                attendanceList = attendanceList.filter(r => r.id !== id);\
-                saveData();\
-                renderTable(activeAdminDate);\
-                updateDashboard();\
-                renderArchive();\
-            \}\
-        \};\
-\
-        // Start App\
-        initApp();\
-    </script>\
-</body>\
-</html>}
+        .signature-box {
+            background-color: #ffffff;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 20px 20px;
+            cursor: crosshair;
+        }
+
+        .print-header { display: none; }
+
+        @media print {
+            .no-print { display: none !important; }
+            .print-only { display: block !important; }
+            .print-header { 
+                display: block !important; 
+                text-align: center; 
+                margin-bottom: 2rem;
+                border-bottom: 2px solid #334155;
+                padding-bottom: 1rem;
+            }
+            body { background: white; padding: 0; }
+            .glass-card { box-shadow: none; border: none !important; width: 100%; }
+            main { margin-top: 0 !important; }
+            table { width: 100%; border-collapse: collapse; margin-top: 1rem; table-layout: auto; }
+            th, td { border: 1px solid #cbd5e1 !important; padding: 6px !important; font-size: 0.7rem; }
+            th { background-color: #f1f5f9 !important; }
+            img.signature-img { max-height: 40px !important; }
+            @page { margin: 1cm; size: A4; }
+        }
+        
+        .animate-fade-in { animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .tab-active { border-bottom: 3px solid #2563eb; color: #1e40af; background: #eff6ff; }
+        .tab-inactive { border-bottom: 3px solid transparent; color: #94a3b8; }
+        
+        /* Status Indicator Pulse Effect */
+        .status-pulse {
+            animation: pulse-animation 2s infinite;
+        }
+        @keyframes pulse-animation {
+            0% { box-shadow: 0 0 0 0px rgba(16, 185, 129, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(16, 185, 129, 0); }
+        }
+        .status-pulse-red {
+            animation: pulse-animation-red 2s infinite;
+        }
+        @keyframes pulse-animation-red {
+            0% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0.4); }
+            70% { box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+            100% { box-shadow: 0 0 0 0px rgba(239, 68, 68, 0); }
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- HEADER KHAS CETAKAN -->
+    <div id="printHeader" class="print-header">
+        <img src="https://i.postimg.cc/HsVZqzF5/JATAPenang.png" alt="Logo" class="h-20 mx-auto mb-4">
+        <h1 id="printMeetingTitle" class="text-xl font-bold uppercase">KEHADIRAN MESYUARAT PADSPT</h1>
+        
+        <div class="grid grid-cols-2 gap-4 text-left border-t border-b border-slate-300 py-4 mt-6 px-4">
+            <div><strong>TARIKH:</strong> <span id="printDate">-</span></div>
+            <div><strong>MASA:</strong> <span id="printTime">-</span></div>
+            <div class="col-span-2"><strong>TEMPAT:</strong> <span id="printVenue">-</span></div>
+        </div>
+        <div class="text-sm mt-4 font-bold underline uppercase tracking-widest text-center">Senarai Kehadiran</div>
+    </div>
+
+    <!-- HEADER UTAMA -->
+    <header class="bg-indigo-950 text-white pb-24 pt-12 px-4 no-print relative overflow-hidden">
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+            <div class="inline-block mb-6">
+                <img src="https://i.postimg.cc/HsVZqzF5/JATAPenang.png" alt="Logo JATA Pulau Pinang" class="h-20 md:h-24 object-contain">
+            </div>
+            <h1 id="heroTitle" class="text-3xl md:text-4xl font-extrabold mb-2 tracking-tight uppercase">Kehadiran Mesyuarat PADSPT</h1>
+            <p class="text-indigo-200 text-sm md:text-base font-medium uppercase tracking-widest">Pejabat Agama Daerah Seberang Perai Tengah</p>
+        </div>
+    </header>
+
+    <main class="flex-grow px-4 -mt-16 pb-12 w-full max-w-5xl mx-auto z-20 relative">
+        
+        <!-- DASHBOARD VIEW -->
+        <div id="dashboardView" class="grid grid-cols-1 lg:grid-cols-3 gap-6 no-print">
+            <div class="lg:col-span-2 space-y-4">
+                <div class="glass-card rounded-2xl p-6 md:p-8 border-t-4 border-t-indigo-600">
+                    <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                        <h2 class="text-xl font-bold text-slate-800 tracking-tight">📋 Info Mesyuarat</h2>
+                        <!-- Status Indicator Pill -->
+                        <div id="statusWrapper" class="flex items-center gap-2">
+                            <span id="systemStatus" class="px-3 py-1 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded-full uppercase transition-all duration-300">Menyambung...</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Tarikh</div>
+                            <div id="dashDate" class="font-bold text-slate-800 text-lg">-</div>
+                        </div>
+                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Masa</div>
+                            <div id="dashTime" class="font-bold text-slate-800 text-lg">-</div>
+                        </div>
+                        <div class="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100">
+                            <div class="text-xs font-bold text-indigo-600 uppercase tracking-wider mb-1">Tempat</div>
+                            <div id="dashVenue" class="font-bold text-slate-800 text-xs leading-tight uppercase">-</div>
+                        </div>
+                    </div>
+
+                    <div class="space-y-4">
+                        <button onclick="openModal('regModal')" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 px-8 rounded-2xl shadow-lg transition-all transform hover:-translate-y-1 flex items-center justify-between group">
+                            <div class="text-left">
+                                <div class="text-xl uppercase font-extrabold tracking-tight">✍ Rekod Kehadiran</div>
+                                <div class="text-indigo-200 text-[10px] font-normal uppercase tracking-widest">Sila daftar masuk sekarang</div>
+                            </div>
+                            <div class="text-2xl bg-white/20 w-12 h-12 rounded-full flex items-center justify-center group-hover:bg-white/30 transition-colors">➜</div>
+                        </button>
+
+                        <!-- PAUTAN BAHAN MESYUARAT (DASHBOARD) -->
+                        <div id="materialsContainer" class="hidden animate-fade-in space-y-3 pt-2">
+                            <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] ml-1">Bahan & Dokumen Mesyuarat</h3>
+                            <div id="materialsList" class="grid grid-cols-1 gap-2">
+                                <!-- Link akan muncul di sini secara dinamik -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <aside class="glass-card rounded-2xl p-6 flex flex-col items-center justify-center text-center relative border-t-4 border-t-emerald-500">
+                <h3 class="text-[10px] font-bold text-slate-400 uppercase tracking-[0.2em] mb-6">Jumlah Kehadiran</h3>
+                <div class="relative mb-4">
+                    <span id="liveCount" class="text-7xl font-black text-slate-800 tracking-tighter">0</span>
+                    <span class="absolute -top-2 -right-2 flex h-4 w-4">
+                      <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                      <span class="relative inline-flex rounded-full h-4 w-4 bg-emerald-500"></span>
+                    </span>
+                </div>
+                <p class="text-xs text-slate-500 font-bold uppercase tracking-widest">Ahli Berdaftar Hari Ini</p>
+                <div class="w-full bg-slate-100 rounded-full h-2 mt-6 overflow-hidden">
+                    <div id="liveProgress" class="bg-emerald-500 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- PANEL ADMIN -->
+        <div id="adminPanel" class="hidden space-y-6 mt-6 animate-fade-in">
+            <div class="glass-card p-6 rounded-2xl flex flex-wrap justify-between items-center gap-4 bg-slate-900 text-white no-print">
+                <div>
+                    <h2 class="text-xl font-bold">🔐 Kawalan Pentadbir</h2>
+                    <p class="text-slate-400 text-xs font-medium">Urus rekod dan tetapan mesyuarat di sini.</p>
+                </div>
+                <button onclick="logout()" class="px-6 py-2 bg-slate-800 hover:bg-red-900/40 rounded-xl text-xs font-bold border border-slate-700 transition-all">Keluar Sistem</button>
+            </div>
+
+            <nav class="flex border-b border-slate-200 no-print bg-white rounded-t-2xl overflow-hidden">
+                <button onclick="switchAdminTab('archive')" id="tabBtnArchive" class="flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active">📂 Rekod & Arkib</button>
+                <button onclick="switchAdminTab('settings')" id="tabBtnSettings" class="flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive">⚙️ Konfigurasi</button>
+            </nav>
+
+            <!-- TAB: ARCHIVE -->
+            <div id="archiveSection" class="space-y-4 no-print">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" id="archiveGrid">
+                    <!-- Dinamik generate folder mesyuarat -->
+                </div>
+            </div>
+
+            <!-- TAB: SETTINGS -->
+            <div id="settingsSection" class="hidden glass-card p-8 rounded-b-2xl no-print">
+                <form id="settingsForm" class="grid grid-cols-1 gap-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tajuk Mesyuarat PADSPT</label>
+                            <input type="text" id="setMeetingTitle" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none transition-all">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Tarikh</label>
+                            <input type="date" id="setMeetingDate" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Masa</label>
+                            <input type="text" id="setMeetingTime" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: 08:30 Malam">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-2">Lokasi / Tempat</label>
+                            <input type="text" id="setMeetingVenue" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- KONFIGURASI LINK BAHAN -->
+                    <div class="border-t border-slate-100 pt-6 mt-2">
+                        <h3 class="font-bold text-slate-800 text-sm uppercase tracking-tight mb-4">🔗 Pautan Bahan Mesyuarat (Maksimum 5)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pautan Bahan 1</label>
+                                <input type="url" id="setLink1" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://link-bahan-1.com">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pautan Bahan 2</label>
+                                <input type="url" id="setLink2" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://link-bahan-2.com">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pautan Bahan 3</label>
+                                <input type="url" id="setLink3" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://link-bahan-3.com">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pautan Bahan 4</label>
+                                <input type="url" id="setLink4" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://link-bahan-4.com">
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Pautan Bahan 5</label>
+                                <input type="url" id="setLink5" class="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg text-sm focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="https://link-bahan-5.com">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit" id="saveSettingsBtn" class="bg-indigo-600 hover:bg-indigo-700 text-white font-black px-10 py-4 rounded-xl shadow-lg transition-all active:scale-95 flex items-center gap-3 uppercase tracking-widest text-xs">
+                            <span>Simpan Konfigurasi</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- VIEW RECORD (TABLE) -->
+            <div id="recordTableView" class="hidden space-y-4">
+                <div class="flex flex-wrap justify-between items-center gap-4">
+                    <button onclick="showArchiveList()" class="no-print flex items-center gap-2 text-indigo-600 font-black text-[10px] uppercase tracking-widest hover:underline">
+                        ⬅ Kembali ke Arkib
+                    </button>
+                    <button onclick="window.print()" class="no-print px-5 py-2 bg-white text-slate-700 border border-slate-200 rounded-xl text-[10px] font-black uppercase tracking-widest shadow-sm hover:bg-slate-50 flex items-center gap-2">
+                        🖨 Cetak Laporan
+                    </button>
+                </div>
+
+                <div class="glass-card rounded-2xl overflow-hidden shadow-none md:shadow-sm">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="text-[10px] font-black text-slate-400 uppercase bg-slate-50 border-y border-slate-100 tracking-widest">
+                                    <th class="py-4 px-4 text-center">Bil</th>
+                                    <th class="py-4 px-4">Nama Penuh</th>
+                                    <th class="py-4 px-4">Jawatan</th>
+                                    <th class="py-4 px-4">Agensi</th>
+                                    <th class="py-4 px-4">No. Tel</th>
+                                    <th class="py-4 px-4">Emel</th>
+                                    <th class="py-4 px-4 text-center">T/Tangan</th>
+                                    <th class="py-4 px-4 text-right no-print">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="attendanceTableBody" class="text-sm">
+                                <!-- Data dinamik -->
+                            </tbody>
+                        </table>
+                    </div>
+                    <div id="noDataMsg" class="hidden py-20 text-center text-slate-400 italic">Tiada rekod pendaftaran ditemui.</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-white border-t border-slate-100 py-8 mt-auto text-center no-print">
+        <p class="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">&copy; 2026 PADSPT KEHADIRAN</p>
+        <button onclick="openModal('loginModal')" class="text-[10px] font-bold text-slate-400 hover:text-indigo-600 uppercase tracking-widest transition-all px-4 py-2 rounded-lg hover:bg-indigo-50">Sistem Pentadbir</button>
+    </footer>
+
+    <!-- MODAL PENDAFTARAN -->
+    <div id="regModal" class="fixed inset-0 z-50 hidden no-print p-4">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm" onclick="closeModal('regModal')"></div>
+        <div class="relative bg-white rounded-3xl shadow-2xl w-full max-w-lg mx-auto mt-4 overflow-hidden flex flex-col max-h-[92vh]">
+            <div class="p-6 border-b border-slate-100 flex justify-between items-center bg-indigo-50">
+                <h3 class="font-bold text-indigo-900 uppercase tracking-tighter">Borang Kehadiran Mesyuarat</h3>
+                <button onclick="closeModal('regModal')" class="text-slate-400 hover:text-slate-600 text-3xl">&times;</button>
+            </div>
+            <form id="attendanceForm" class="p-8 space-y-5 overflow-y-auto">
+                <div class="space-y-1">
+                    <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Nama Penuh</label>
+                    <input type="text" id="inpName" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan nama penuh">
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Jawatan</label>
+                        <input type="text" id="inpPos" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Masukkan jawatan">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Agensi</label>
+                        <input type="text" id="inpAgency" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="Cth: PADSPT / KKM">
+                    </div>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="space-y-1">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">No. Telefon</label>
+                        <input type="tel" id="inpPhone" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="01x-xxxxxxx">
+                    </div>
+                    <div class="space-y-1">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Emel</label>
+                        <input type="email" id="inpEmail" required class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none" placeholder="nama@agensi.gov.my">
+                    </div>
+                </div>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center">
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase ml-1">Tandatangan Digital</label>
+                        <button type="button" id="clearCanvas" class="text-[10px] font-black text-red-500 uppercase tracking-tighter hover:underline">Padam Semula</button>
+                    </div>
+                    <div class="border-2 border-dashed border-slate-200 rounded-2xl h-44 w-full relative signature-box overflow-hidden">
+                        <canvas id="sigCanvas" class="w-full h-full"></canvas>
+                    </div>
+                </div>
+                <button type="submit" id="submitBtn" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black py-5 rounded-2xl shadow-lg mt-4 flex items-center justify-center gap-3 transition-all active:scale-95 uppercase tracking-widest">
+                    <span>Hantar Kehadiran</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL LOGIN ADMIN -->
+    <div id="loginModal" class="fixed inset-0 z-50 hidden no-print flex items-center justify-center p-4">
+        <div class="absolute inset-0 bg-slate-900/90 backdrop-blur-sm" onclick="closeModal('loginModal')"></div>
+        <div class="relative bg-white rounded-3xl shadow-xl w-full max-w-sm p-8 text-center border-t-8 border-t-slate-800">
+            <div class="w-16 h-16 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">🔐</div>
+            <h3 class="font-extrabold text-xl text-slate-800 mb-6 uppercase">Pentadbir Sahaja</h3>
+            <div class="space-y-4 text-left">
+                <input type="password" id="admPass" class="w-full px-4 py-4 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none text-center font-bold tracking-[0.5em]" placeholder="••••••••">
+                <p id="loginErr" class="hidden text-[10px] text-red-500 font-bold text-center uppercase">Kataluan Salah!</p>
+            </div>
+            <div class="mt-8 flex gap-3">
+                <button onclick="attemptLogin()" class="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-black uppercase tracking-widest shadow-lg hover:bg-indigo-700 active:scale-95 transition-all">Masuk</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        // Firebase Imports
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, setDoc, getDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Konfigurasi Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyDf6hTPqLOEhP_0hPO5RHbOREYmZFU3gXQ",
+            authDomain: "kehadiran-mesyuarat-padspt.firebaseapp.com",
+            projectId: "kehadiran-mesyuarat-padspt",
+            storageBucket: "kehadiran-mesyuarat-padspt.firebasestorage.app",
+            messagingSenderId: "727847434256",
+            appId: "1:727847434256:web:1a65ee1db489d55a147295",
+            measurementId: "G-8Q50G4X5X7"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const appId = 'kehadiran-mesyuarat-padspt';
+
+        // State management
+        let attendanceList = [];
+        let currentMeeting = {
+            title: "MESYUARAT PADSPT",
+            date: new Date().toISOString().split('T')[0],
+            time: "08:30 MALAM",
+            venue: "PEJABAT PADSPT",
+            links: ["", "", "", "", ""]
+        };
+        let activeAdminDate = currentMeeting.date;
+        let currentUser = null;
+
+        // AUTHENTICATION & STATUS UPDATE
+        const updateStatusIndicator = (status) => {
+            const statusEl = document.getElementById('systemStatus');
+            if (!statusEl) return;
+
+            if (status === 'online') {
+                statusEl.textContent = "ONLINE";
+                statusEl.className = "px-4 py-1 bg-emerald-500 text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg status-pulse transition-all duration-500";
+            } else if (status === 'offline') {
+                statusEl.textContent = "OFFLINE";
+                statusEl.className = "px-4 py-1 bg-red-500 text-white text-[10px] font-black rounded-full uppercase tracking-widest shadow-lg status-pulse-red transition-all duration-500";
+            } else {
+                statusEl.textContent = "MENYAMBUNG...";
+                statusEl.className = "px-3 py-1 bg-yellow-100 text-yellow-700 text-[10px] font-bold rounded-full uppercase transition-all duration-300";
+            }
+        };
+
+        const initAuth = async () => {
+            try {
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    try {
+                        await signInWithCustomToken(auth, __initial_auth_token);
+                    } catch (tokenErr) {
+                        await signInAnonymously(auth);
+                    }
+                } else {
+                    await signInAnonymously(auth);
+                }
+            } catch (err) {
+                console.error("Auth Error:", err);
+                updateStatusIndicator('offline');
+            }
+        };
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                currentUser = user;
+                updateStatusIndicator('online');
+                startSettingsListener();
+                startAttendanceListener();
+            } else {
+                updateStatusIndicator('offline');
+            }
+        });
+
+        // Fallback network detection
+        window.addEventListener('online', () => { if (currentUser) updateStatusIndicator('online'); });
+        window.addEventListener('offline', () => updateStatusIndicator('offline'));
+
+        // UI Initialization Fallback
+        window.initApp = () => {
+            updateUIWithSettings();
+            updateDashboard();
+            renderArchive();
+        };
+
+        // LISTENERS
+        function startSettingsListener() {
+            const settingsRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'active');
+            onSnapshot(settingsRef, (snap) => {
+                if (snap.exists()) {
+                    currentMeeting = snap.data();
+                    updateUIWithSettings();
+                    updateDashboard();
+                    renderArchive();
+                } else {
+                    setDoc(settingsRef, currentMeeting);
+                }
+            });
+        }
+
+        function startAttendanceListener() {
+            const colRef = collection(db, 'artifacts', appId, 'public', 'data', 'attendance');
+            onSnapshot(colRef, (snapshot) => {
+                attendanceList = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                updateDashboard();
+                renderArchive();
+                if (!document.getElementById('recordTableView').classList.contains('hidden')) {
+                    renderTable(activeAdminDate);
+                }
+            }, (err) => {
+                console.error("Firestore Listener Error:", err);
+            });
+        }
+
+        // UI UPDATES
+        function updateUIWithSettings() {
+            const formatDate = (ds) => {
+                const d = new Date(ds);
+                return isNaN(d.getTime()) ? ds : d.toLocaleDateString('ms-MY', { day: '2-digit', month: 'long', year: 'numeric' }).toUpperCase();
+            };
+
+            document.getElementById('heroTitle').textContent = currentMeeting.title || "";
+            document.getElementById('dashDate').textContent = formatDate(currentMeeting.date);
+            document.getElementById('dashTime').textContent = currentMeeting.time || "";
+            document.getElementById('dashVenue').textContent = currentMeeting.venue || "";
+
+            document.getElementById('setMeetingTitle').value = currentMeeting.title || "";
+            document.getElementById('setMeetingDate').value = currentMeeting.date || "";
+            document.getElementById('setMeetingTime').value = currentMeeting.time || "";
+            document.getElementById('setMeetingVenue').value = currentMeeting.venue || "";
+            
+            if(currentMeeting.links) {
+                currentMeeting.links.forEach((link, idx) => {
+                    const el = document.getElementById(`setLink${idx + 1}`);
+                    if(el) el.value = link || "";
+                });
+            }
+
+            const materialsContainer = document.getElementById('materialsContainer');
+            const materialsList = document.getElementById('materialsList');
+            if (materialsList) {
+                materialsList.innerHTML = '';
+                const activeLinks = (currentMeeting.links || []).filter(l => l && l.trim() !== "");
+                if(activeLinks.length > 0) {
+                    materialsContainer.classList.remove('hidden');
+                    activeLinks.forEach((link, i) => {
+                        const a = document.createElement('a');
+                        a.href = link;
+                        a.target = "_blank";
+                        a.className = "flex items-center gap-3 p-3 bg-indigo-50/50 border border-indigo-100 rounded-xl hover:bg-indigo-100 transition-colors group";
+                        a.innerHTML = `
+                            <span class="w-8 h-8 flex items-center justify-center bg-white rounded-lg shadow-sm text-xs font-bold text-indigo-600">${i + 1}</span>
+                            <span class="text-xs font-bold text-slate-700 truncate flex-grow">Buka Bahan Mesyuarat</span>
+                            <span class="text-[10px] text-indigo-400 group-hover:translate-x-1 transition-transform">➔</span>
+                        `;
+                        materialsList.appendChild(a);
+                    });
+                } else {
+                    materialsContainer.classList.add('hidden');
+                }
+            }
+            
+            document.getElementById('printMeetingTitle').textContent = currentMeeting.title || "";
+            document.getElementById('printDate').textContent = formatDate(currentMeeting.date);
+            document.getElementById('printTime').textContent = currentMeeting.time || "";
+            document.getElementById('printVenue').textContent = currentMeeting.venue || "";
+        }
+
+        function updateDashboard() {
+            const todayRecords = attendanceList.filter(r => r.meetingDate === currentMeeting.date);
+            const count = todayRecords.length;
+            const liveCountEl = document.getElementById('liveCount');
+            const liveProgressEl = document.getElementById('liveProgress');
+            if (liveCountEl) liveCountEl.textContent = count;
+            if (liveProgressEl) {
+                const progress = Math.min((count / 20) * 100, 100);
+                liveProgressEl.style.width = `${progress}%`;
+            }
+        }
+
+        // Tandatangan digital (Canvas)
+        const canvas = document.getElementById('sigCanvas');
+        const ctx = canvas.getContext('2d');
+        let drawing = false;
+
+        function resizeCanvas() {
+            if (!canvas) return;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+        }
+
+        function getMousePos(e) {
+            const rect = canvas.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: clientX - rect.left, y: clientY - rect.top };
+        }
+
+        if (canvas) {
+            ['mousedown', 'touchstart'].forEach(evt => canvas.addEventListener(evt, (e) => {
+                drawing = true;
+                const pos = getMousePos(e);
+                ctx.beginPath();
+                ctx.moveTo(pos.x, pos.y);
+                if(e.type === 'touchstart') e.preventDefault();
+            }, {passive: false}));
+
+            ['mousemove', 'touchmove'].forEach(evt => canvas.addEventListener(evt, (e) => {
+                if(!drawing) return;
+                const pos = getMousePos(e);
+                ctx.lineWidth = 3;
+                ctx.lineCap = 'round';
+                ctx.strokeStyle = '#312e81';
+                ctx.lineTo(pos.x, pos.y);
+                ctx.stroke();
+                if(e.type === 'touchmove') e.preventDefault();
+            }, {passive: false}));
+
+            ['mouseup', 'touchend'].forEach(evt => window.addEventListener(evt, () => drawing = false));
+            document.getElementById('clearCanvas').onclick = () => ctx.clearRect(0,0, canvas.width, canvas.height);
+        }
+
+        // FORM ACTIONS
+        document.getElementById('attendanceForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if (!currentUser) {
+                alert("Sila tunggu sehingga pengesahan selesai.");
+                return;
+            }
+
+            const blank = document.createElement('canvas');
+            blank.width = canvas.width; blank.height = canvas.height;
+            if (canvas.toDataURL() === blank.toDataURL()) {
+                alert("Sila berikan tandatangan digital sebagai pengesahan.");
+                return;
+            }
+
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+
+            try {
+                const newRecord = {
+                    name: document.getElementById('inpName').value,
+                    position: document.getElementById('inpPos').value,
+                    agency: document.getElementById('inpAgency').value,
+                    phone: document.getElementById('inpPhone').value,
+                    email: document.getElementById('inpEmail').value,
+                    signature: canvas.toDataURL(),
+                    createdAt: serverTimestamp(),
+                    meetingDate: currentMeeting.date,
+                    userId: currentUser.uid
+                };
+
+                await addDoc(collection(db, 'artifacts', appId, 'public', 'data', 'attendance'), newRecord);
+                
+                closeModal('regModal');
+                e.target.reset();
+                ctx.clearRect(0,0, canvas.width, canvas.height);
+                alert("Kehadiran berjaya direkodkan.");
+            } catch (err) {
+                console.error("Submission error:", err);
+                alert("Ralat menghantar kehadiran. Sila cuba lagi.");
+            } finally {
+                btn.disabled = false;
+            }
+        };
+
+        document.getElementById('settingsForm').onsubmit = async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            const btn = document.getElementById('saveSettingsBtn');
+            btn.disabled = true;
+            
+            try {
+                const updatedLinks = [
+                    document.getElementById('setLink1').value,
+                    document.getElementById('setLink2').value,
+                    document.getElementById('setLink3').value,
+                    document.getElementById('setLink4').value,
+                    document.getElementById('setLink5').value
+                ];
+
+                const updatedSettings = {
+                    title: document.getElementById('setMeetingTitle').value.toUpperCase(),
+                    date: document.getElementById('setMeetingDate').value,
+                    time: document.getElementById('setMeetingTime').value.toUpperCase(),
+                    venue: document.getElementById('setMeetingVenue').value.toUpperCase(),
+                    links: updatedLinks
+                };
+                
+                await setDoc(doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'active'), updatedSettings);
+                alert("Konfigurasi mesyuarat telah dikemas kini!");
+            } catch (err) {
+                console.error("Save error:", err);
+                alert("Ralat menyimpan tetapan.");
+            } finally {
+                btn.disabled = false;
+            }
+        };
+
+        // ADMIN UTILITIES
+        window.renderArchive = () => {
+            const grid = document.getElementById('archiveGrid');
+            if(!grid) return;
+            grid.innerHTML = '';
+
+            const dates = [...new Set(attendanceList.map(r => r.meetingDate))].filter(Boolean);
+            if(!dates.includes(currentMeeting.date)) dates.push(currentMeeting.date);
+            dates.sort((a,b) => b.localeCompare(a));
+
+            dates.forEach(dateStr => {
+                const isActive = dateStr === currentMeeting.date;
+                const d = new Date(dateStr);
+                const display = d.toLocaleDateString('ms-MY', { day: '2-digit', month: 'short', year: 'numeric' });
+                
+                const card = document.createElement('div');
+                card.className = `glass-card p-6 rounded-2xl flex items-center justify-between group cursor-pointer hover:border-indigo-500 transition-all ${isActive ? 'border-l-4 border-l-indigo-600 bg-indigo-50/20' : ''}`;
+                card.onclick = () => window.showTable(dateStr);
+                
+                card.innerHTML = `
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 ${isActive ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-400'} rounded-xl flex items-center justify-center text-xl shadow-sm">
+                            ${isActive ? '🗓️' : '📁'}
+                        </div>
+                        <div>
+                            <h4 class="font-extrabold text-slate-800 uppercase text-sm">${isActive ? currentMeeting.title : 'Rekod Mesyuarat'}</h4>
+                            <p class="text-[10px] text-slate-500 font-bold uppercase tracking-widest">${display}</p>
+                        </div>
+                    </div>
+                    <div class="text-slate-300 group-hover:text-indigo-600 transition-colors">➜</div>
+                `;
+                grid.appendChild(card);
+            });
+        };
+
+        window.renderTable = (dateStr) => {
+            const tbody = document.getElementById('attendanceTableBody');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+            
+            const filtered = attendanceList.filter(r => r.meetingDate === dateStr);
+
+            if(filtered.length === 0) {
+                document.getElementById('noDataMsg').classList.remove('hidden');
+                return;
+            }
+            document.getElementById('noDataMsg').classList.add('hidden');
+
+            filtered.forEach((r, idx) => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-slate-50 hover:bg-slate-50/50 transition-colors";
+                tr.innerHTML = `
+                    <td class="py-4 px-4 text-center font-mono text-xs text-slate-400">${idx+1}</td>
+                    <td class="py-4 px-4 font-bold text-slate-800">${r.name}</td>
+                    <td class="py-4 px-4 text-xs font-semibold text-slate-600 uppercase">${r.position}</td>
+                    <td class="py-4 px-4 text-xs text-indigo-600 font-bold uppercase">${r.agency}</td>
+                    <td class="py-4 px-4 text-xs font-mono">${r.phone}</td>
+                    <td class="py-4 px-4 text-[10px] text-slate-500 lowercase">${r.email || '-'}</td>
+                    <td class="py-4 px-4 text-center">
+                        <img src="${r.signature}" class="h-8 mx-auto border border-slate-100 bg-white rounded signature-img shadow-sm hover:scale-[3] transition-transform cursor-zoom-in">
+                    </td>
+                    <td class="py-4 px-4 text-right no-print">
+                        <button onclick="window.delEntry('${r.id}')" class="text-slate-300 hover:text-red-500 transition-colors">🗑</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        };
+
+        // EXPOSE TO WINDOW
+        window.openModal = (id) => {
+            document.getElementById(id).classList.remove('hidden');
+            if (id === 'regModal') setTimeout(resizeCanvas, 100);
+        };
+        window.closeModal = (id) => document.getElementById(id).classList.add('hidden');
+        
+        window.attemptLogin = () => {
+            const pass = document.getElementById('admPass').value;
+            if (pass === 'Admin123') {
+                closeModal('loginModal');
+                document.getElementById('dashboardView').classList.add('hidden');
+                document.getElementById('adminPanel').classList.remove('hidden');
+            } else {
+                document.getElementById('loginErr').classList.remove('hidden');
+            }
+        };
+
+        window.logout = () => {
+            document.getElementById('adminPanel').classList.add('hidden');
+            document.getElementById('dashboardView').classList.remove('hidden');
+        };
+
+        window.switchAdminTab = (tab) => {
+            document.getElementById('archiveSection').classList.toggle('hidden', tab !== 'archive');
+            document.getElementById('settingsSection').classList.toggle('hidden', tab !== 'settings');
+            document.getElementById('tabBtnArchive').className = tab === 'archive' ? 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active' : 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive';
+            document.getElementById('tabBtnSettings').className = tab === 'settings' ? 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-active' : 'flex-1 px-6 py-4 font-bold text-[10px] uppercase tracking-[0.2em] tab-inactive';
+            document.getElementById('recordTableView').classList.add('hidden');
+        };
+
+        window.showTable = (dateStr) => {
+            activeAdminDate = dateStr;
+            document.getElementById('archiveSection').classList.add('hidden');
+            document.getElementById('recordTableView').classList.remove('hidden');
+            window.renderTable(dateStr);
+        };
+
+        window.showArchiveList = () => {
+            document.getElementById('recordTableView').classList.add('hidden');
+            document.getElementById('archiveSection').classList.remove('hidden');
+        };
+
+        window.delEntry = async (id) => {
+            if (!currentUser) return;
+            if (confirm("Hapus rekod ini secara kekal dari pangkalan data?")) {
+                try {
+                    await deleteDoc(doc(db, 'artifacts', appId, 'public', 'data', 'attendance', id));
+                } catch (err) {
+                    console.error("Delete Error:", err);
+                }
+            }
+        };
+
+        // START INITIALIZATION
+        initAuth();
+        window.initApp();
+    </script>
+</body>
+</html>
